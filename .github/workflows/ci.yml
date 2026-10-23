@@ -1,0 +1,85 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-and-build:
+    name: Validate, Typecheck & Build
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_PRISMA_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      POSTGRES_URL_NON_POOLING: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      JWT_SECRET: "ci-verification-secret-key-minimum-32-chars"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun runtime
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.17"
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock', '**/bun.lockb', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+
+      - name: Validate Prisma schema and generate client
+        run: |
+          bunx prisma validate
+          bunx prisma generate
+
+      - name: Run TypeScript type check
+        run: bun run typecheck
+
+      - name: Build Next.js application
+        run: bun run build
+
+  deploy-database-migrations:
+    name: Deploy Prisma Migrations (Vercel Postgres)
+    needs: quality-and-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+      POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun runtime
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.17"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile || bun install
+
+      - name: Apply production migrations when Vercel Postgres secrets exist
+        run: |
+          if [ -n "$POSTGRES_URL_NON_POOLING" ]; then
+            bunx prisma migrate deploy
+          else
+            echo "POSTGRES_URL_NON_POOLING secret not configured; skipping remote migration step."
+          fi
+
