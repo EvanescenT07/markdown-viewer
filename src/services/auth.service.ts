@@ -88,7 +88,7 @@ export async function registerUserAccount(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot reach PostgreSQL database. Check PRISMA_DATABASE_URL configuration.",
+          "Cannot reach PostgreSQL database. Check MDVIEWER_PRISMA_DATABASE_URL configuration.",
         status: 503,
       });
     }
@@ -166,7 +166,7 @@ export async function authenticateUserCredentials(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot reach PostgreSQL database. Check PRISMA_DATABASE_URL configuration.",
+          "Cannot reach PostgreSQL database. Check MDVIEWER_PRISMA_DATABASE_URL configuration.",
         status: 503,
       });
     }

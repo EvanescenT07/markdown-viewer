@@ -67,7 +67,7 @@ export async function createMarkdownDocument(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot connect to PostgreSQL database. Verify PRISMA_DATABASE_URL.",
+          "Cannot connect to PostgreSQL database. Verify MDVIEWER_PRISMA_DATABASE_URL.",
         status: 503,
       });
     }
@@ -116,7 +116,7 @@ export async function listUserDocumentHistory(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot connect to PostgreSQL database. Verify PRISMA_DATABASE_URL.",
+          "Cannot connect to PostgreSQL database. Verify MDVIEWER_PRISMA_DATABASE_URL.",
         status: 503,
       });
     }
@@ -179,7 +179,7 @@ export async function getUserDocumentById(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot connect to PostgreSQL database. Verify PRISMA_DATABASE_URL.",
+          "Cannot connect to PostgreSQL database. Verify MDVIEWER_PRISMA_DATABASE_URL.",
         status: 503,
       });
     }
@@ -240,7 +240,7 @@ export async function deleteUserDocumentById(
       return fail({
         code: "DATABASE_ERROR",
         message:
-          "Cannot connect to PostgreSQL database. Verify PRISMA_DATABASE_URL.",
+          "Cannot connect to PostgreSQL database. Verify MDVIEWER_PRISMA_DATABASE_URL.",
         status: 503,
       });
     }

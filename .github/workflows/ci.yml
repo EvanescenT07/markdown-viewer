@@ -19,9 +19,9 @@ jobs:
     name: Validate, Typecheck & Build
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
-      POSTGRES_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
-      PRISMA_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      MDVIEWER_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      MDVIEWER_POSTGRES_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      MDVIEWER_PRISMA_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
       JWT_SECRET: "ci-verification-secret-key-minimum-32-chars"
 
     steps:
@@ -61,8 +61,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
-      PRISMA_DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
-      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+      MDVIEWER_PRISMA_DATABASE_URL: ${{ secrets.MDVIEWER_PRISMA_DATABASE_URL }}
+      MDVIEWER_POSTGRES_URL: ${{ secrets.MDVIEWER_POSTGRES_URL }}
 
     steps:
       - name: Checkout repository
@@ -78,9 +78,9 @@ jobs:
 
       - name: Apply production migrations when Vercel Postgres secrets exist
         run: |
-          if [ -n "$POSTGRES_URL" ]; then
+          if [ -n "$MDVIEWER_POSTGRES_URL" ]; then
             bunx prisma migrate deploy
           else
-            echo "POSTGRES_URL secret not configured; skipping remote migration step."
+            echo "MDVIEWER_POSTGRES_URL secret not configured; skipping remote migration step."
           fi
 

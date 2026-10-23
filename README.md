@@ -67,7 +67,7 @@ flowchart LR
 ├── .github/workflows/ci.yml       # GitHub Actions CI/CD pipeline (Bun + Prisma + Next.js)
 ├── prisma/
 │   ├── migrations/                # SQL migration history for users & documents tables
-│   └── schema.prisma              # Prisma v6 schema wired to PRISMA_DATABASE_URL & POSTGRES_URL
+│   └── schema.prisma              # Prisma v6 schema wired to MDVIEWER_PRISMA_DATABASE_URL & MDVIEWER_POSTGRES_URL
 ├── scripts/
 │   └── vercel-build.mjs           # Build script gating prisma migrate deploy by environment
 ├── src/
@@ -112,9 +112,9 @@ cp .env.example .env
 Required keys in `.env`:
 
 ```dotenv
-DATABASE_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
-POSTGRES_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
-PRISMA_DATABASE_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
+MDVIEWER_DATABASE_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
+MDVIEWER_POSTGRES_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
+MDVIEWER_PRISMA_DATABASE_URL="postgres://<project_id>:sk_<secret_key>@db.prisma.io:5432/postgres?sslmode=require"
 
 JWT_SECRET="<base64_32_byte_secret_from_openssl_rand_base64_32>"
 ```
@@ -166,7 +166,7 @@ Open `http://localhost:3000` in your browser.
 ## Deployment (Vercel & GitHub Actions)
 
 1. Push repository to GitHub. The workflow in `.github/workflows/ci.yml` automatically validates `prisma/schema.prisma`, runs `bun run typecheck`, and verifies `bun run build`.
-2. In GitHub Repository Settings -> Secrets and variables -> Actions, add `PRISMA_DATABASE_URL` and `POSTGRES_URL` so pushes to `main` apply pending database migrations automatically.
-3. Import repository into Vercel and connect your Vercel Prisma Postgres store (which injects `DATABASE_URL`, `POSTGRES_URL`, and `PRISMA_DATABASE_URL`) plus `JWT_SECRET`.
+2. In GitHub Repository Settings -> Secrets and variables -> Actions, add `MDVIEWER_PRISMA_DATABASE_URL` and `MDVIEWER_POSTGRES_URL` so pushes to `main` apply pending database migrations automatically.
+3. Import repository into Vercel and connect your Vercel Prisma Postgres store with custom prefix `MDVIEWER` (which injects `MDVIEWER_DATABASE_URL`, `MDVIEWER_POSTGRES_URL`, and `MDVIEWER_PRISMA_DATABASE_URL`) plus `JWT_SECRET`.
 4. During production builds (`VERCEL_ENV="production"`), `scripts/vercel-build.mjs` runs `prisma generate`, `prisma migrate deploy`, and `next build`.
 
