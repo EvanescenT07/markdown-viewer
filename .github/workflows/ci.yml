@@ -19,8 +19,9 @@ jobs:
     name: Validate, Typecheck & Build
     runs-on: ubuntu-latest
     env:
-      POSTGRES_PRISMA_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
-      POSTGRES_URL_NON_POOLING: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      POSTGRES_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
+      PRISMA_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/documark?schema=public"
       JWT_SECRET: "ci-verification-secret-key-minimum-32-chars"
 
     steps:
@@ -60,8 +61,8 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
-      POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
-      POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+      PRISMA_DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
 
     steps:
       - name: Checkout repository
@@ -77,9 +78,9 @@ jobs:
 
       - name: Apply production migrations when Vercel Postgres secrets exist
         run: |
-          if [ -n "$POSTGRES_URL_NON_POOLING" ]; then
+          if [ -n "$POSTGRES_URL" ]; then
             bunx prisma migrate deploy
           else
-            echo "POSTGRES_URL_NON_POOLING secret not configured; skipping remote migration step."
+            echo "POSTGRES_URL secret not configured; skipping remote migration step."
           fi
 
