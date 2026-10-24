@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { CodeBlock } from "@/components/reader/code-block";
 import { MermaidDiagram } from "@/components/reader/mermaid-diagram";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Extend GitHub sanitization schema to preserve language-* classes on code blocks and GFM task list checkboxes.
 const markdownSanitizeSchema = {
@@ -58,11 +59,11 @@ const markdownComponents: Components = {
   },
   table({ children }) {
     return (
-      <div className="my-5 break-inside-avoid overflow-x-auto rounded-md border border-[var(--border-subtle)]">
+      <ScrollArea className="my-5 w-full break-inside-avoid rounded-md border border-[var(--border-subtle)]">
         <table className="w-full border-collapse text-left text-sm">
           {children}
         </table>
-      </div>
+      </ScrollArea>
     );
   },
   thead({ children }) {

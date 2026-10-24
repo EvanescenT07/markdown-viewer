@@ -2,6 +2,7 @@
 
 import React, { useEffect, useId, useState } from "react";
 import { useTheme } from "@/components/theme/theme-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { messages } from "@/i18n/messages";
 
 interface MermaidDiagramProps {
@@ -105,16 +106,20 @@ export function MermaidDiagram({
           {messages.reader.mermaidLoading}
         </div>
       ) : (
-        <div
-          className="flex justify-center overflow-x-auto rounded bg-[var(--bg-canvas)] p-4 [&_svg]:h-auto [&_svg]:max-w-full"
-          dangerouslySetInnerHTML={{ __html: svgMarkup }}
-        />
+        <ScrollArea className="w-full rounded bg-[var(--bg-canvas)]">
+          <div
+            className="flex justify-center p-4 [&_svg]:h-auto [&_svg]:max-w-full"
+            dangerouslySetInnerHTML={{ __html: svgMarkup }}
+          />
+        </ScrollArea>
       )}
 
       {isSourceVisible && (
-        <pre className="mt-3 overflow-x-auto rounded border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-3 font-mono text-xs text-[var(--text-primary)] print:hidden">
-          <code>{chartDefinition}</code>
-        </pre>
+        <ScrollArea className="mt-3 w-full rounded border border-[var(--border-subtle)] bg-[var(--bg-canvas)] print:hidden">
+          <pre className="p-3 font-mono text-xs text-[var(--text-primary)]">
+            <code>{chartDefinition}</code>
+          </pre>
+        </ScrollArea>
       )}
     </figure>
   );

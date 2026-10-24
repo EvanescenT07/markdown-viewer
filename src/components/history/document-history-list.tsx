@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatByteSize, formatDocumentTimestamp } from "@/lib/formatters";
 import { messages } from "@/i18n/messages";
 
@@ -156,7 +157,7 @@ export function DocumentHistoryList({
           </p>
         </div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded border border-[var(--border-subtle)] bg-[var(--bg-canvas)]">
+        <ScrollArea className="mt-4 w-full rounded border border-[var(--border-subtle)] bg-[var(--bg-canvas)]">
           <table className="w-full border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-semibold tracking-wide text-[var(--text-secondary)]">
@@ -213,7 +214,7 @@ export function DocumentHistoryList({
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollArea>
       )}
 
       {pendingDeleteDoc && (

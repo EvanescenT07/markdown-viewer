@@ -21,6 +21,9 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: `${messages.brand.name} | ${messages.brand.tagline}`,
   description: messages.landing.description,
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default async function RootLayout({

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@/components/theme/theme-provider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { messages } from "@/i18n/messages";
 
 interface CodeBlockProps {
@@ -104,16 +105,18 @@ export function CodeBlock({
         </button>
       </div>
 
-      {highlightedHtml ? (
-        <div
-          className="overflow-x-auto bg-[var(--bg-canvas)] p-4 font-mono text-sm leading-relaxed [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0"
-          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
-        />
-      ) : (
-        <pre className="m-0 overflow-x-auto bg-[var(--bg-canvas)] p-4 font-mono text-sm leading-relaxed text-[var(--text-primary)]">
-          <code>{normalizedCode}</code>
-        </pre>
-      )}
+      <ScrollArea className="w-full bg-[var(--bg-canvas)]">
+        {highlightedHtml ? (
+          <div
+            className="p-4 font-mono text-sm leading-relaxed [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0"
+            dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+          />
+        ) : (
+          <pre className="m-0 p-4 font-mono text-sm leading-relaxed text-[var(--text-primary)]">
+            <code>{normalizedCode}</code>
+          </pre>
+        )}
+      </ScrollArea>
     </div>
   );
 }

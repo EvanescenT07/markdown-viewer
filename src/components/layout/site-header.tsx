@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { DocuMarkLogo } from "@/components/brand/documark-logo";
 import { useTheme } from "@/components/theme/theme-provider";
 import { messages } from "@/i18n/messages";
 import type { SessionTokenPayload } from "@/lib/auth/jwt";
@@ -52,8 +53,9 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
         <div className="flex items-center gap-6">
           <Link
             href={session ? "/dashboard" : "/"}
-            className="inline-flex min-h-[44px] items-center gap-1.5 rounded px-1 font-semibold tracking-tight text-[var(--text-primary)]"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded px-1 font-semibold tracking-tight text-[var(--text-primary)]"
           >
+            <DocuMarkLogo className="h-6 w-6 shrink-0" />
             <span className="text-lg">{messages.brand.name}</span>
             <span className="rounded border border-[var(--border-interactive)] bg-[var(--bg-surface)] px-1.5 py-0.5 font-mono text-xs font-medium text-[var(--text-secondary)]">
               {messages.brand.extensionTag}
@@ -94,7 +96,7 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
         <div className="hidden items-center gap-3 md:flex">
           <button
             type="button"
-            onClick={toggleTheme}
+            onClick={(event) => toggleTheme(event)}
             aria-label={
               theme === "light"
                 ? messages.nav.themeToDark
@@ -104,6 +106,7 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
           >
             {theme === "light" ? (
               <svg
+                data-theme-icon="true"
                 aria-hidden="true"
                 className="h-4 w-4"
                 viewBox="0 0 24 24"
@@ -115,6 +118,7 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
               </svg>
             ) : (
               <svg
+                data-theme-icon="true"
                 aria-hidden="true"
                 className="h-4 w-4"
                 viewBox="0 0 24 24"
@@ -171,17 +175,45 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
         <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
-            onClick={toggleTheme}
+            onClick={(event) => toggleTheme(event)}
             aria-label={
               theme === "light"
                 ? messages.nav.themeToDark
                 : messages.nav.themeToLight
             }
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded border border-[var(--border-interactive)] bg-[var(--bg-surface)] px-2.5 text-xs font-medium text-[var(--text-primary)]"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded border border-[var(--border-interactive)] bg-[var(--bg-surface)] px-2.5 text-xs font-medium text-[var(--text-primary)]"
           >
-            {theme === "light"
-              ? messages.nav.themeLabelDark
-              : messages.nav.themeLabelLight}
+            {theme === "light" ? (
+              <svg
+                data-theme-icon="true"
+                aria-hidden="true"
+                className="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ) : (
+              <svg
+                data-theme-icon="true"
+                aria-hidden="true"
+                className="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            )}
+            <span>
+              {theme === "light"
+                ? messages.nav.themeLabelDark
+                : messages.nav.themeLabelLight}
+            </span>
           </button>
 
           <button

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <style>
+    .sheet { fill: #FAF9F6; stroke: #141413; }
+    .fold { fill: #F2F0EA; stroke: #141413; }
+    .ink { stroke: #141413; }
+    .accent { stroke: #1D4ED8; }
+    .accent-fill { fill: #1D4ED8; }
+    @media (prefers-color-scheme: dark) {
+      .sheet { fill: #1A1C20; stroke: #ECEAE4; }
+      .fold { fill: #121316; stroke: #ECEAE4; }
+      .ink { stroke: #ECEAE4; }
+      .accent { stroke: #60A5FA; }
+      .accent-fill { fill: #60A5FA; }
+    }
+  </style>
+  <path
+    class="sheet"
+    d="M6 5C6 3.89543 6.89543 3 8 3H19.5L26 9.5V27C26 28.1046 25.1046 29 24 29H8C6.89543 29 6 28.1046 6 27V5Z"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+  <path
+    class="fold"
+    d="M19 3V8.5C19 9.05228 19.4477 9.5 20 9.5H26"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    class="ink"
+    d="M9.5 20V14L12 17L14.5 14V20"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    class="accent"
+    d="M20 13.5V20.5M20 20.5L17.5 18M20 20.5L22.5 18"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <rect class="accent-fill" x="9.5" y="23.5" width="13" height="2" rx="1" />
+</svg>
+

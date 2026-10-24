@@ -1,13 +1,13 @@
 # DocuMark Design System & Direction
 
 ## Design Read
-Reading this as: Technical documentation workspace and Markdown reader for engineers, product managers, and technical writers, in an editorial-technical visual language, dial ENERGY 1 / RHYTHM 2 / MOTION 1.
+Reading this as: Technical documentation workspace and Markdown reader for engineers, product managers, and technical writers, in an editorial-technical visual language, dial ENERGY 1 / RHYTHM 2 / MOTION 2.
 
-Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
+Dial: ENERGY 1 / RHYTHM 2 / MOTION 2
 
 ## Brand Identity & Motif
 - **Identity:** Editorial print manual meets precision technical workbench.
-- **Brand Mark:** Typographic wordmark `DocuMark` with a monospace `.md` file-extension tag (`[R-23]`: confirmed typographic mark, no fabricated logo glyph).
+- **Brand Mark:** Technical specification sheet SVG (`DocuMarkLogo` + `src/app/icon.svg`) with folded corner and `.md` downward arrow glyph (`[R-23]`: user-confirmed SVG concept in Cobalt `#1D4ED8` / `#60A5FA` and Paper `#FAF9F6` / Carbon `#1A1C20`), paired with `DocuMark` `.md` wordmark.
 - **Identity Motif:** Structural hairlines (`1px solid`), tabular numerals (`font-variant-numeric: tabular-nums`) for byte counts and timestamps, and exposed document metadata headers that echo technical specification sheets.
 
 ## Color Palette (`R-29`, `R-25`)
@@ -47,4 +47,6 @@ Maximum 2 core surface/text families plus 1 deliberate cobalt accent. All pairin
 - **Spacing:** Structural whitespace separates document metadata, toolbar actions, and rendered prose without floating shadows.
 - **Radius:** Sharp `4px` (`rounded`) on inputs/code blocks and `6px` (`rounded-md`) on containers to reflect technical document sheets (`R-11`).
 - **Icons:** Inline geometric SVG strokes paired directly with visible text labels on every control (`R-04`).
+- **Scrollbars (`ScrollArea` & Viewport):** `1px` structural hairline track (`--bg-surface` / `--border-subtle`) with a `4px` (`rounded`) interactive thumb (`--border-interactive` to `--accent-primary` on hover) for cross-platform consistency (`R-11`, `R-25`).
+- **Motion (Circular Theme Reveal):** View Transitions API `clip-path: circle()` radiates precisely from the theme toggle icon center (`[data-theme-icon]`, `550ms cubic-bezier(0.22, 1, 0.36, 1)`) to anchor spatial continuity when switching between Paper Editorial and Carbon Slate (`R-19`).
 
