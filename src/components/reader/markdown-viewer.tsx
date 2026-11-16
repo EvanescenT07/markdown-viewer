@@ -7,6 +7,8 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { CodeBlock } from "@/components/reader/code-block";
 import { MermaidDiagram } from "@/components/reader/mermaid-diagram";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { rehypeSubjectBulletLists } from "@/lib/markdown/subject-list";
+import { cn } from "@/lib/utils";
 
 // Extend GitHub sanitization schema to preserve language-* classes on code blocks and GFM task list checkboxes.
 const markdownSanitizeSchema = {
@@ -30,11 +32,20 @@ interface MarkdownViewerProps {
   readonly content: string;
 }
 
+type TableHeaderCellProps = React.ComponentPropsWithoutRef<"th"> & {
+  readonly "data-subject-column"?: string;
+};
+
+type TableBodyCellProps = React.ComponentPropsWithoutRef<"td"> & {
+  readonly "data-subject-column"?: string;
+  readonly "data-compact-cell"?: string;
+};
+
 const markdownComponents: Components = {
   pre({ children }) {
     return <>{children}</>;
   },
-  code({ className, children, ...props }) {
+  code({ className, children }) {
     const rawText = String(children ?? "");
     const languageMatch = /language-([\w-]+)/.exec(className ?? "");
     const language = languageMatch?.[1]?.toLowerCase() ?? "";
@@ -42,10 +53,7 @@ const markdownComponents: Components = {
 
     if (!isFencedBlock) {
       return (
-        <code
-          className="rounded border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-1.5 py-0.5 font-mono text-[0.875em] text-[var(--text-primary)]"
-          {...props}
-        >
+        <code className="rounded border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-1.5 py-0.5 font-mono text-[0.875em] text-[var(--text-primary)]">
           {children}
         </code>
       );
@@ -59,8 +67,8 @@ const markdownComponents: Components = {
   },
   table({ children }) {
     return (
-      <ScrollArea className="my-5 w-full break-inside-avoid rounded-md border border-[var(--border-subtle)]">
-        <table className="w-full border-collapse text-left text-sm">
+      <ScrollArea className="my-5 w-full rounded-md border border-[var(--border-subtle)] print:overflow-visible">
+        <table className="w-full border-collapse text-left text-sm tabular-nums">
           {children}
         </table>
       </ScrollArea>
@@ -73,16 +81,60 @@ const markdownComponents: Components = {
       </thead>
     );
   },
-  th({ children }) {
+  tr({ children }) {
+    return <tr className="break-inside-avoid">{children}</tr>;
+  },
+  th({
+    children,
+    className,
+    style,
+    colSpan,
+    rowSpan,
+    scope,
+    ...props
+  }: TableHeaderCellProps) {
+    const isSubjectColumn = props["data-subject-column"] === "true";
     return (
-      <th className="border-r border-[var(--border-subtle)] px-3.5 py-2.5 last:border-r-0">
+      <th
+        colSpan={colSpan}
+        rowSpan={rowSpan}
+        scope={scope}
+        style={style}
+        data-subject-column={isSubjectColumn ? "true" : undefined}
+        className={cn(
+          "border-r border-[var(--border-subtle)] px-3.5 py-2.5 last:border-r-0",
+          isSubjectColumn && "min-w-[260px] sm:min-w-[320px]",
+          className
+        )}
+      >
         {children}
       </th>
     );
   },
-  td({ children }) {
+  td({
+    children,
+    className,
+    style,
+    colSpan,
+    rowSpan,
+    ...props
+  }: TableBodyCellProps) {
+    const isSubjectColumn = props["data-subject-column"] === "true";
+    const isCompactCell = props["data-compact-cell"] === "true";
     return (
-      <td className="border-t border-r border-[var(--border-subtle)] px-3.5 py-2.5 text-[var(--text-primary)] last:border-r-0">
+      <td
+        colSpan={colSpan}
+        rowSpan={rowSpan}
+        style={style}
+        data-subject-column={isSubjectColumn ? "true" : undefined}
+        data-compact-cell={isCompactCell ? "true" : undefined}
+        className={cn(
+          "border-t border-r border-[var(--border-subtle)] px-3.5 py-3 align-top text-[var(--text-primary)] last:border-r-0",
+          isSubjectColumn && "min-w-[260px] sm:min-w-[320px]",
+          isCompactCell && "whitespace-nowrap",
+          className
+        )}
+      >
         {children}
       </td>
     );
@@ -116,7 +168,10 @@ export function MarkdownViewer({
     <div className="documark-prose max-w-none text-[var(--text-primary)]">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[[rehypeSanitize, markdownSanitizeSchema]]}
+        rehypePlugins={[
+          [rehypeSanitize, markdownSanitizeSchema],
+          rehypeSubjectBulletLists,
+        ]}
         components={markdownComponents}
       >
         {content}

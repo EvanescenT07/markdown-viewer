@@ -58,9 +58,12 @@ export function DocumentReaderWorkspace({
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
         }
-        pre, table, figure, .mermaid-diagram-block {
+        pre, tr, figure, .mermaid-diagram-block {
           break-inside: avoid;
           page-break-inside: avoid;
+        }
+        thead {
+          display: table-header-group;
         }
         h1, h2, h3, h4 {
           break-after: avoid;

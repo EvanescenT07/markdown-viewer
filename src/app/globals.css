@@ -98,6 +98,11 @@ body {
   ::-webkit-scrollbar {
     display: none;
   }
+
+  [data-slot="scroll-area"],
+  [data-slot="scroll-area-viewport"] {
+    overflow: visible !important;
+  }
 }
 
 ::view-transition-old(root),
@@ -206,6 +211,30 @@ body {
 .documark-prose li > input[type="checkbox"] {
   margin-right: 0.5rem;
   accent-color: var(--accent-primary);
+}
+
+.documark-prose ul.documark-subject-list {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.documark-prose ul.documark-subject-list > li {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.documark-prose ul.documark-subject-list > li + li {
+  margin-top: 0.375rem;
+}
+
+.documark-prose ul.documark-subject-list > li::marker {
+  color: var(--text-secondary);
+}
+
+.documark-prose ul.documark-subject-list code {
+  overflow-wrap: anywhere;
 }
 
 .documark-prose hr {
