@@ -5,7 +5,7 @@ const PROTECTED_PAGE_PREFIXES = ["/dashboard", "/read"];
 const PROTECTED_API_PREFIXES = ["/api/documents"];
 const AUTH_GUEST_PAGES = ["/login", "/register"];
 
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
   const isProtectedPage = PROTECTED_PAGE_PREFIXES.some(

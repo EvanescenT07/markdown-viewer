@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   experimental: {
+    agentUpgrade: "security",
     serverActions: {
       bodySizeLimit: "2mb",
     },
