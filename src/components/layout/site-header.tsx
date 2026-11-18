@@ -16,12 +16,9 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null);
+  const isMobileMenuOpen = mobileMenuPath === pathname;
   const [isSigningOut, setIsSigningOut] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (!isMobileMenuOpen) {
@@ -29,7 +26,7 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
     }
     const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key === "Escape") {
-        setIsMobileMenuOpen(false);
+        setMobileMenuPath(null);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -218,7 +215,7 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
 
           <button
             type="button"
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            onClick={() => setMobileMenuPath((prev) => (prev === pathname ? null : pathname))}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-navigation-drawer"
             className="inline-flex min-h-[44px] min-w-[44px] items-center gap-1.5 rounded border border-[var(--border-interactive)] bg-[var(--bg-surface)] px-3 text-sm font-medium text-[var(--text-primary)]"
@@ -259,21 +256,21 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
               </div>
               <Link
                 href="/dashboard"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setMobileMenuPath(null)}
                 className="inline-flex min-h-[44px] items-center rounded px-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-canvas)]"
               >
                 {messages.nav.workspace}
               </Link>
               <Link
                 href="/dashboard#upload-panel"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setMobileMenuPath(null)}
                 className="inline-flex min-h-[44px] items-center rounded px-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-canvas)]"
               >
                 {messages.nav.uploadSection}
               </Link>
               <Link
                 href="/dashboard#history-panel"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setMobileMenuPath(null)}
                 className="inline-flex min-h-[44px] items-center rounded px-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-canvas)]"
               >
                 {messages.nav.historySection}
@@ -291,14 +288,14 @@ export function SiteHeader({ session }: SiteHeaderProps): React.JSX.Element {
             <div className="flex flex-col gap-2">
               <Link
                 href="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setMobileMenuPath(null)}
                 className="inline-flex min-h-[44px] items-center justify-center rounded border border-[var(--border-interactive)] bg-[var(--bg-canvas)] px-3 text-sm font-medium text-[var(--text-primary)]"
               >
                 {messages.nav.signIn}
               </Link>
               <Link
                 href="/register"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setMobileMenuPath(null)}
                 className="inline-flex min-h-[44px] items-center justify-center rounded bg-[var(--accent-primary)] px-3 text-sm font-semibold text-[var(--accent-contrast)]"
               >
                 {messages.nav.createAccount}

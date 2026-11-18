@@ -32,10 +32,12 @@ export function DocumentHistoryList({
     useState<SerializedDocumentHistoryItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- server-provided history is mirrored into local state after refresh */
   useEffect(() => {
     setDocuments(initialDocuments);
     setErrorMessage(initialError);
   }, [initialDocuments, initialError]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (!pendingDeleteDoc) {

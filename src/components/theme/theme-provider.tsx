@@ -88,6 +88,7 @@ export function ThemeProvider({
     null
   );
 
+  /* eslint-disable react-hooks/set-state-in-effect -- stored theme is read after mount to keep SSR markup stable */
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     if (saved === "dark" || saved === "light") {
@@ -97,6 +98,7 @@ export function ThemeProvider({
       document.documentElement.setAttribute("data-theme", "light");
     }
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const effectiveTheme: ThemeMode = isPrintMode ? "light" : theme;
 
